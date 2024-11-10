@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet";
+import { AuthContext } from "../context/AuthProvider";
 
 const Profile = () => {
+  const { user } = useContext(AuthContext);
   const [showCard, setShowCard] = useState("all");
 
   const handleProject = (category) => {
@@ -12,7 +14,27 @@ const Profile = () => {
   return (
     <>
       <section className="pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] dark:bg-dark">
+        <Helmet>
+          <title>{user?.displayName} | Profile</title>
+        </Helmet>
         <div className="container mx-auto">
+          <div className="flex flex-wrap -mx-4">
+            <div className="w-full px-4">
+              <div className="mx-auto mb-[60px] max-w-[510px] text-center">
+                <img
+                  className="w-52 rounded-full h-full bg-center bg-cover object-cover mx-auto"
+                  src={user?.photoURL}
+                  alt=""
+                />
+                <h2 className="text-dark mb-3 text-3xl leading-[1.208] font-bold sm:text-4xl md:text-[40px]">
+                  Name: {user?.displayName}
+                </h2>
+                <p className="text-body-color text-xl dark:text-dark-6">
+                  Email: {user?.email}
+                </p>
+              </div>
+            </div>
+          </div>
           <div className="flex flex-wrap -mx-4">
             <div className="w-full px-4">
               <div className="mx-auto mb-[60px] max-w-[510px] text-center">
@@ -164,10 +186,6 @@ const PortfolioCard = ({
 }) => {
   return (
     <>
-      {" "}
-      <Helmet>
-        <title>Profile</title>
-      </Helmet>
       <div
         className={`w-full px-4 md:w-1/2 xl:w-1/3 ${
           showCard === "all" || showCard === category.toLowerCase()

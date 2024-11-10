@@ -1,9 +1,14 @@
 /* eslint-disable react/prop-types */
 
+import { useContext } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  if (user) return navigate("/");
   return (
     <section className="bg-gray-1 py-20 dark:bg-dark ">
       <Helmet>

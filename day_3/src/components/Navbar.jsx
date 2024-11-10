@@ -1,18 +1,27 @@
 import { Link, NavLink } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = () => {
+  const { user } = useContext(AuthContext);
+  const queryUrl = user?.displayName.split(" ").join("-").toLowerCase();
   const Links = (
     <>
       <li>
         <NavLink to={"/"}>Home</NavLink>
       </li>
-      <li>
-        <NavLink to={"/profile"}>Profile</NavLink>
-      </li>
-      <li>
-        <NavLink to={"/dashboard"}>Dashboard</NavLink>
-      </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to={`/profile?user=${queryUrl}`}>Profile</NavLink>
+          </li>
+          <li>
+            <NavLink to={"/dashboard"}>Dashboard</NavLink>
+          </li>
+        </>
+      )}
       <li>
         <NavLink to={"/team"}>Team</NavLink>
       </li>
@@ -45,23 +54,33 @@ const Navbar = () => {
             {Links}
           </ul>
         </div>
-        <NavLink to={"/"} className="btn btn-ghost text-4xl">
+        <NavLink to={"/"} className="btn btn-ghost text-4xl font-black">
           PrivateRoute
         </NavLink>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{Links}</ul>
       </div>
-      <div className="navbar-end flex gap-3">
-        <Link to={"/login"} className="btn btn-accent">
-          Login
-        </Link>
-        <Link to={"/register"} className="btn btn-outline">
-          Register
-        </Link>
-        <Link to={"/profile"} className="text-4xl">
-          <FaUserCircle />
-        </Link>
+      <div className="navbar-end">
+        {!user && (
+          <div className="flex gap-3 ">
+            <Link to={"/login"} className="btn btn-accent">
+              Login
+            </Link>
+            <Link to={"/register"} className="btn btn-outline">
+              Register
+            </Link>
+          </div>
+        )}
+
+        {user && (
+          <Link to={"/profile"} className="text-4xl ">
+            <div className="flex gap-1 justify-center items-center">
+              <FaUserCircle />
+              <span className="text-lg font-semibold">{user?.displayName}</span>
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );

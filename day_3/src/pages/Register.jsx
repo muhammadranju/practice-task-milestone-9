@@ -9,10 +9,13 @@ import {
 } from "firebase/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet";
+import { AuthContext } from "../context/AuthProvider";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [isError, setIsError] = useState("");
   const [success, setSuccess] = useState("");
   const [eye, setEye] = useState(true);
@@ -21,7 +24,11 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
+
+  const { registerUser, user: isUser } = useContext(AuthContext);
+
+  if (isUser) return navigate("/");
+
   const uppercaseLetter = /(?=.*[A-Z])/;
   const lowercaseLetter = /(?=.*[a-z])/;
   const digitLetter = /(?=.*[0-9])/;
@@ -38,58 +45,25 @@ const Register = () => {
     });
     try {
       e.preventDefault();
-      // const { fullName, photo, email, password } = e.target.elements.value;
       const accept = e.target.terms.checked;
       const fullName = e.target.elements.fullName.value;
       const photo = e.target.elements.photo.value;
       const email = e.target.elements.email.value;
       const passwordField = e.target.elements.password.value;
 
-      if (!fullName) return setUser({ fullName: "Full Name is required!" });
-      if (!email) return setUser({ email: "Email is required!" });
-      if (!passwordField) return setUser({ password: "Password is required!" });
-      if (!photo) return setUser({ photo: "Photo is required!" });
-
-      const validatePassword = (password, accept) => {
-        if (password.length < 6)
-          return "Password should be at least 6 characters!";
-        if (!uppercaseLetter.test(password))
-          return "Password must add at least one Uppercase letter!";
-        if (!lowercaseLetter.test(password))
-          return "Password must be at least one Lowercase letter!";
-        if (!digitLetter.test(password))
-          return "You must be provide at least one Number!";
-        if (!specialLetter.test(password))
-          return "Special character must be provided!";
-        if (!accept)
-          return "You must accept the terms and conditions to register!";
-
-        return ""; // No error if all validations pass
-      };
-
-      const errorMessage = validatePassword(e.target.password.value, accept);
-      if (errorMessage) {
-        setIsError(errorMessage);
-        return;
-      }
-      const userData = await createUserWithEmailAndPassword(
-        auth,
-        e.target.email.value,
-        e.target.password.value
+      const userData = await registerUser(
+        fullName,
+        photo,
+        email,
+        passwordField
       );
-      await updateProfile(auth.currentUser, {
-        displayName: e.target.fullName.value,
-        photoURL: e.target.photo.value,
-      });
 
       if (userData) {
         navigate("/login");
         console.log(userData);
         setSuccess("User Created Successfully!");
         toast.success(success);
-        await sendEmailVerification(auth.currentUser);
       }
-      console.log(fullName, photo, email, passwordField);
     } catch (error) {
       console.log(error);
     }
