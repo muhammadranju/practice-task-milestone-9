@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import { useState } from "react";
@@ -36,6 +37,7 @@ const Register = () => {
     setUser({
       fullName: "",
       email: "",
+      photo: "",
       password: "",
     });
     try {
@@ -46,10 +48,12 @@ const Register = () => {
       const fullName = e.target.fullName.value;
       const email = e.target.email.value;
       const passwordField = e.target.password.value;
+      const photo = e.target.photo.value;
 
       if (!fullName) return setUser({ fullName: "Full Name is required!" });
       if (!email) return setUser({ email: "Email is required!" });
       if (!passwordField) return setUser({ password: "Password is required!" });
+      if (!photo) return setUser({ photo: "Photo is required!" });
 
       const validatePassword = (password, accept) => {
         if (password.length < 6)
@@ -70,7 +74,6 @@ const Register = () => {
 
       const errorMessage = validatePassword(e.target.password.value, accept);
       if (errorMessage) {
-        // toast.error(errorMessage);
         setIsError(errorMessage);
         return;
       }
@@ -80,7 +83,10 @@ const Register = () => {
         e.target.email.value,
         e.target.password.value
       );
-
+      await updateProfile(auth.currentUser, {
+        displayName: e.target.fullName.value,
+        photoURL: e.target.photo.value,
+      });
       if (userData) {
         navigate("/login");
         console.log(userData);
@@ -155,6 +161,24 @@ const Register = () => {
             </div>
             <div className="form-control">
               <label className="label">
+                <span className="label-text">Photo</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Photo Url"
+                name="photo"
+                className="input input-bordered"
+              />
+              {user && (
+                <label className={`label ${user.photo ? "" : "hidden"}`}>
+                  <span className="label-text text-red-600 font-semibold">
+                    {user.photo}
+                  </span>
+                </label>
+              )}
+            </div>
+            <div className="form-control">
+              <label className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
@@ -202,8 +226,7 @@ const Register = () => {
                   </span>
                 </label>
               )}
-
-              {isError && (
+              {!isError.includes("Firebase") && (
                 <label className={`label ${isError ? "" : "hidden"}`}>
                   <span className="label-text text-red-600 font-semibold">
                     {isError}
@@ -221,6 +244,13 @@ const Register = () => {
                   Already have an account?
                 </NavLink>
               </label>
+              {isError.includes("Firebase") && (
+                <label className={`label ${isError ? "" : "hidden"}`}>
+                  <span className="label-text text-red-600 font-semibold">
+                    {isError}
+                  </span>
+                </label>
+              )}
             </div>
             <div className="form-control">
               <label className="label cursor-pointer">
