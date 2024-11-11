@@ -13,7 +13,7 @@ const Team = () => {
               <span className="mb-2 block text-lg font-semibold text-primary">
                 Our Team
               </span>
-              <h2 className="mb-3 text-3xl font-bold leading-[1.2] text-dark dark:text-white sm:text-4xl md:text-[40px]">
+              <h2 className="mb-3 text-3xl font-bold leading-[1.2] text-dark  sm:text-4xl md:text-[40px]">
                 Our Awesome Team
               </h2>
               <p className="text-base text-body-color dark:text-dark-6">
@@ -62,9 +62,7 @@ const TeamCard = ({ imageSrc, name, profession }) => {
             <img src={imageSrc} alt="" className="w-full" />
             <div className="absolute bottom-5 left-0 w-full text-center">
               <div className="relative mx-5 overflow-hidden rounded-lg bg-white px-3 py-5 dark:bg-dark-2">
-                <h3 className="text-base font-semibold text-dark dark:text-white">
-                  {name}
-                </h3>
+                <h3 className="text-base font-semibold text-dark ">{name}</h3>
                 <p className="text-xs text-body-color dark:text-dark-6">
                   {profession}
                 </p>

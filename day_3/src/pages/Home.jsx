@@ -9,7 +9,7 @@ const Home = () => {
       <Helmet>
         <title>Home</title>
       </Helmet>
-      ;
+
       <Blog />
     </>
   );

@@ -7,11 +7,13 @@ import Profile from "../pages/Profile";
 import Dashboard from "../pages/Dashboard";
 import Team from "../pages/Team";
 import PrivateRoute from "./PrivateRoute";
+import NotFound from "../layout/NotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,

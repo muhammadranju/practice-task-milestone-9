@@ -4,11 +4,15 @@ import { Helmet } from "react-helmet";
 import { AuthContext } from "../context/AuthProvider";
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, signOutUser } = useContext(AuthContext);
   const [showCard, setShowCard] = useState("all");
 
   const handleProject = (category) => {
     setShowCard(category);
+  };
+
+  const handleLogout = async () => {
+    await signOutUser();
   };
 
   return (
@@ -29,9 +33,16 @@ const Profile = () => {
                 <h2 className="text-dark mb-3 text-3xl leading-[1.208] font-bold sm:text-4xl md:text-[40px]">
                   Name: {user?.displayName}
                 </h2>
-                <p className="text-body-color text-xl dark:text-dark-6">
+                <p className="text-body-color  text-xl dark:text-dark-6">
                   Email: {user?.email}
                 </p>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-error text-white mt-2
+                "
+                >
+                  Log Out
+                </button>
               </div>
             </div>
           </div>
@@ -201,9 +212,7 @@ const PortfolioCard = ({
             <span className="text-primary mb-2 block text-sm font-medium">
               {category}
             </span>
-            <h3 className="text-dark dark:text-white mb-5 text-xl font-bold">
-              {title}
-            </h3>
+            <h3 className="text-dark  mb-5 text-xl font-bold">{title}</h3>
             <a
               href={buttonHref}
               className="text-body-color dark:text-dark-6 hover:border-primary hover:bg-primary inline-block rounded-md border border-stroke dark:border-dark-3 py-[10px] px-7 text-sm font-medium transition hover:text-white"

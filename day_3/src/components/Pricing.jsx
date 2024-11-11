@@ -2,7 +2,7 @@
 
 const Pricing = () => {
   return (
-    <section className="relative z-10 overflow-hidden bg-white pb-12 pt-20 dark:bg-dark lg:pb-[90px] lg:pt-[120px]">
+    <section className="relative z-10 overflow-hidden bg-white pb-12 pt-20  lg:pb-[90px] lg:pt-[120px]">
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
@@ -10,7 +10,7 @@ const Pricing = () => {
               <span className="mb-2 block text-lg font-semibold text-primary">
                 Pricing Table
               </span>
-              <h2 className="mb-3 text-3xl font-bold leading-[1.208] text-dark dark:text-white sm:text-4xl md:text-[40px]">
+              <h2 className="mb-3 text-3xl font-bold leading-[1.208] text-dark  sm:text-4xl md:text-[40px]">
                 Our Pricing Plan
               </h2>
               <p className="text-base text-body-color dark:text-dark-6">
@@ -91,7 +91,7 @@ const PricingCard = ({
           <span className="mb-3 block text-lg font-semibold text-primary">
             {type}
           </span>
-          <h2 className="mb-5 text-[42px] font-bold text-dark dark:text-white">
+          <h2 className="mb-5 text-[42px] font-bold text-dark ">
             {price}
             <span className="text-base font-medium text-body-color dark:text-dark-6">
               / {subscription}

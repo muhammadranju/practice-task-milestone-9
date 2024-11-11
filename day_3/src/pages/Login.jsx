@@ -4,11 +4,50 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
 
 const Login = () => {
+  const googleProvider = new GoogleAuthProvider();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  if (user) return navigate("/");
+  const {
+    user: isUser,
+    loginUser,
+    loading,
+    setLoading,
+  } = useContext(AuthContext);
+  if (loading)
+    return (
+      <div className="flex justify-center items-center mt-52">
+        <span className="loading loading-ball loading-lg"></span>
+      </div>
+    );
+
+  if (isUser) return navigate("/");
+
+  const handelLoginSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.elements.email.value;
+    const password = e.target.elements.password.value;
+
+    try {
+      const userData = await loginUser(email, password);
+      console.log(userData);
+      setLoading(false);
+
+      if (userData) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handelGoogleLogin = async () => {
+    const googleAuth = await signInWithPopup(auth, googleProvider);
+    console.log(googleAuth);
+  };
+
   return (
     <section className="bg-gray-1 py-20 dark:bg-dark ">
       <Helmet>
@@ -18,7 +57,7 @@ const Login = () => {
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
             <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white px-10 py-16 text-center dark:bg-dark-2 sm:px-12 md:px-[60px]">
-              <form>
+              <form onSubmit={handelLoginSubmit}>
                 <InputBox type="email" name="email" placeholder="Email" />
                 <InputBox
                   type="password"
@@ -77,8 +116,8 @@ const Login = () => {
                 </li>
                 <li className="w-full px-2">
                   <a
-                    href="/#"
-                    className="flex h-11 items-center justify-center rounded-md bg-[#D64937] hover:bg-opacity-90"
+                    onClick={handelGoogleLogin}
+                    className="flex h-11 items-center cursor-pointer justify-center rounded-md bg-[#D64937] hover:bg-opacity-90"
                   >
                     <svg
                       width="18"
@@ -343,7 +382,7 @@ const InputBox = ({ type, placeholder, name }) => {
         type={type}
         placeholder={placeholder}
         name={name}
-        className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:text-white"
+        className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3"
       />
     </div>
   );

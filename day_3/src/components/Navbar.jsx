@@ -4,8 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
-  const queryUrl = user?.displayName.split(" ").join("-").toLowerCase();
+  const { user, loading } = useContext(AuthContext);
   const Links = (
     <>
       <li>
@@ -15,7 +14,7 @@ const Navbar = () => {
       {user && (
         <>
           <li>
-            <NavLink to={`/profile?user=${queryUrl}`}>Profile</NavLink>
+            <NavLink to={`/profile`}>Profile</NavLink>
           </li>
           <li>
             <NavLink to={"/dashboard"}>Dashboard</NavLink>
@@ -62,15 +61,23 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{Links}</ul>
       </div>
       <div className="navbar-end">
-        {!user && (
+        {loading ? (
           <div className="flex gap-3 ">
-            <Link to={"/login"} className="btn btn-accent">
-              Login
-            </Link>
-            <Link to={"/register"} className="btn btn-outline">
-              Register
-            </Link>
+            <div className="loading loading-ball loading-lg"></div>
           </div>
+        ) : (
+          <>
+            {!user && (
+              <div className="flex gap-3 ">
+                <Link to={"/login"} className="btn btn-accent">
+                  Login
+                </Link>
+                <Link to={"/register"} className="btn btn-outline">
+                  Register
+                </Link>
+              </div>
+            )}
+          </>
         )}
 
         {user && (

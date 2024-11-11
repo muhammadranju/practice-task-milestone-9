@@ -16,7 +16,7 @@ const BlogCard = ({ image, date, CardTitle, CardDescription }) => {
             <h3>
               <a
                 href="/#"
-                className="mb-4 inline-block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-2xl lg:text-xl xl:text-2xl"
+                className="mb-4 inline-block text-xl font-semibold text-dark hover:text-primary  sm:text-2xl lg:text-xl xl:text-2xl"
               >
                 {CardTitle}
               </a>

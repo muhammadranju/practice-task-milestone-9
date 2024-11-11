@@ -14,7 +14,16 @@ import { Helmet } from "react-helmet";
 import { AuthContext } from "../context/AuthProvider";
 
 const Register = () => {
+  const { registerUser, user: isUser, loading } = useContext(AuthContext);
   const navigate = useNavigate();
+  if (loading)
+    return (
+      <div className="flex justify-center items-center mt-52">
+        <span className="loading loading-ball loading-lg"></span>
+      </div>
+    );
+
+  if (isUser) return navigate("/");
 
   const [isError, setIsError] = useState("");
   const [success, setSuccess] = useState("");
@@ -24,8 +33,6 @@ const Register = () => {
     email: "",
     password: "",
   });
-
-  const { registerUser, user: isUser } = useContext(AuthContext);
 
   if (isUser) return navigate("/");
 
