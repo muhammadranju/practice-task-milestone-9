@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
@@ -23,7 +23,7 @@ const Register = () => {
       </div>
     );
 
-  if (isUser) return navigate("/");
+  if (isUser) return <Navigate to="/" replace />;
 
   const [isError, setIsError] = useState("");
   const [success, setSuccess] = useState("");
@@ -66,7 +66,7 @@ const Register = () => {
       );
 
       if (userData) {
-        navigate("/login");
+        <Navigate to="/login" replace />;
         console.log(userData);
         setSuccess("User Created Successfully!");
         toast.success(success);

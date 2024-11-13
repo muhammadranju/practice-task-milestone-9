@@ -2,14 +2,13 @@
 
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 
 const Login = () => {
   const googleProvider = new GoogleAuthProvider();
-  const navigate = useNavigate();
   const {
     user: isUser,
     loginUser,
@@ -23,7 +22,7 @@ const Login = () => {
       </div>
     );
 
-  if (isUser) return navigate("/");
+  if (isUser) return <Navigate to="/" replace />;
 
   const handelLoginSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +35,7 @@ const Login = () => {
       setLoading(false);
 
       if (userData) {
-        navigate("/");
+        <Navigate to="/profile" replace />;
       }
     } catch (error) {
       console.log(error);
