@@ -5,7 +5,6 @@ import Pricing from "../components/Pricing";
 const Dashboard = () => {
   return (
     <>
-      {" "}
       <Helmet>
         <title>Dashboard</title>
       </Helmet>

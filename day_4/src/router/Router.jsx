@@ -8,10 +8,11 @@ import Dashboard from "../pages/Dashboard";
 import Team from "../pages/Team";
 import PrivateRoute from "./PrivateRoute";
 import NotFound from "../layout/NotFound";
+import App from "../App";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <App />,
     errorElement: <NotFound />,
     children: [
       {
